@@ -10,3 +10,31 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.textouno{
+    font-size: xx-large;
+}
+.tamaño{
+    height: 800px;
+}
+.borde{
+    border-style: none;
+}
+
+.xtrashade:before {
+    box-shadow: -20px 0 20px -20px #001f9c inset;
+    content: " ";
+    height: 100%;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    width: 20px;
+  }
+.xtrashade:after {
+    box-shadow: 20px 0 20px -20px #001f9c inset;
+    content: " ";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 20px;
+  }
