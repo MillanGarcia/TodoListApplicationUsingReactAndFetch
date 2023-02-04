@@ -6,6 +6,7 @@ import Contador from "./Contador.js";
 import {numero_id} from "./TodoList.js";
 
 //create your first component
+//LA ULTIMA TAREA NO SE PUEDE ELIMINAR PORQUE NO PUEDE ENVIARTE UN ARRAY VACIO
 const Home = (props) => {
 
 	const [counter, setCounter] = useState(0);
