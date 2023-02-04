@@ -1,41 +1,82 @@
 import React, { useState, useEffect } from "react";
-import InputElem  from "./InputElem.jsx";
-import ButtonElem  from "./ButtonElem.jsx";
-import TodoList  from "./TodoList.jsx";
-import Contador from "./Contador.jsx";
+import InputElem  from "./InputElem.js";
+import ButtonElem  from "./ButtonElem.js";
+import {TodoList}  from "./TodoList.js";
+import Contador from "./Contador.js";
+import {numero_id} from "./TodoList.js";
 
 //create your first component
 const Home = (props) => {
 
 	const [counter, setCounter] = useState(0);
 	const [taskValue, setTaskValue] = useState("");
-	const [tasks, setTasks] = useState([]);
-	
+	const [tasks, setTasks] = useState([]);		
 
-	const addTask = (event) => {
-		event.preventDefault();
+	const addTask = async (event) => {
+		//event.preventDefault();
 		const auxTasks = [...tasks]
+		taskValue.length===0 ?
+		alert("Debe escribir contenido en la tarea primero")
+		:
 		auxTasks.push({
-		id: counter,
-		text: taskValue,
+		label: taskValue,
+		done: false
 		})
 		console.log({ auxTasks })
 		setTasks(auxTasks)
 		setCounter(counter + 1)
 		setTaskValue("")
+		console.log(auxTasks[0])
+		const resp = await fetch('https://assets.breatheco.de/apis/fake/todos/user/maillan1', {
+		  method: "PUT",
+		  body:
+			JSON.stringify(auxTasks),
+		  headers: {
+			"Content-Type": "application/json"
+		  },
+		  })
+	  const data = await resp.json();
+	  console.log(data)
 	}
-	const number="1";
+
 	const myPlaceholder = (tasks.length===0) ? "Sin tareas, presione 'Enter' o clicke en 'Añadir tarea'" : "Escriba aqui su nueva tarea";
 
 	const contador1 = tasks.length+" item left";
 	
-	const removeTask = (id) => {
+	const removeTask = async (id) => {
+		console.log(<numero_id/>)
 		const auxTasks = [...tasks]
-		const result = auxTasks.filter((tasks) => tasks.id !== id);
+		console.log(id)
+		const result = auxTasks.filter((tasks,index) => 
+		index !== id );
+		
 		setTasks(result);
 		console.log({ result })
+		const resp = await fetch('https://assets.breatheco.de/apis/fake/todos/user/maillan1', {
+		  method: "PUT",
+		  body:
+			JSON.stringify(result),
+		  headers: {
+			"Content-Type": "application/json"
+		  },
+		  })
+	  const data = await resp.json();
+	  console.log(data)
 	}
-
+	/*const removeallTasks = async ()=>{
+		const result=[{"label":null,"done":true}];
+		setTasks(result)
+		const resp = await fetch('https://assets.breatheco.de/apis/fake/todos/user/maillan1', {
+		  method: "PUT",
+		  body:
+			JSON.stringify(result),
+		  headers: {
+			"Content-Type": "application/json"
+		  },
+		  })
+	  const data = await resp.json();
+	  console.log(data)
+	}*/
 	const handleSubmit = event => {
 		event.preventDefault();
 	
@@ -43,17 +84,21 @@ const Home = (props) => {
 	  };
 
 	useEffect(()=>{
-		fetch('https://assets.breatheco.de/apis/fake/todos/user/alesanchezr', {
-      method: "PUT",
-      body: JSON.stringify(todos),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+		
+	const getTask = async () =>{
+		const resp = await fetch('https://assets.breatheco.de/apis/fake/todos/user/maillan1', {
+				method: "GET",
+			})
+		const data = await resp.json();
+		setTasks(data)
+	}
+	getTask();
+	console.log(tasks)
+	
+	/*fetch('https://assets.breatheco.de/apis/fake/todos/user/maillan1', {
+			method: "GET",
+		})
     .then(resp => {
-        console.log(resp.ok); // will be true if the response is successfull
-        console.log(resp.status); // the status code = 200 or code = 400 etc.
-        console.log(resp.text()); // will try return the exact result as string
         return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
     })
     .then(data => {
@@ -63,7 +108,7 @@ const Home = (props) => {
     .catch(error => {
         //error handling
         console.log(error);
-    });
+    });*/
 	},[])
 
 	return (
@@ -77,9 +122,10 @@ const Home = (props) => {
 				</form>
 				</div >
 					<div style={{backgroundColor:"white",width:"400px",height:"35px",margin:"auto",border:"1px solid black",borderTopStyle:"none",borderLeftStyle:"none"}}>
-						<TodoList tasks={tasks} removeTask={removeTask} numero={contador1} />
+						<TodoList tasks={tasks} funcion={removeTask} numero={contador1} />
 					</div>
 			</div>
+			
 		</div>
 		)
 

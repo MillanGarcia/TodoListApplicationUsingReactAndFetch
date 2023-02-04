@@ -1,16 +1,20 @@
 import React from "react";
-import Contador from "./Contador.jsx"
-const TodoList = (props) => {
+import Contador from "./Contador.js"
+export const TodoList = (props) => {
+    
     return <>
         {
-        props.tasks.map((task) => <div className="w-100 text-start  d-flex" style={{backgroundColor:"white",height:"40px",padding:"8px",boxShadow:"0px 0px 10px grey",border:"1px solid grey"}}>
+        props.tasks.map((task,index) =>{ const numero_id=index;
+            
+            console.log(numero_id)        
+            return (<div className="w-100 text-start  d-flex" style={{backgroundColor:"white",height:"40px",padding:"8px",boxShadow:"0px 0px 10px grey",border:"1px solid grey"}}>
                                     <div className="w-50">
-                                        {task.text} 
+                                        {task.label} 
                                     </div>
                                     <div className="w-50 justify-content-end">
-                                        <button style={{float:"right"}} type="button" onClick={() => props.removeTask(task.id)}>X</button>
+                                        <button style={{float:"right"}} type="button" id={numero_id} onClick={() => props.funcion(numero_id)}>X</button>
                                     </div>
-                                </div>)}
+                                </div>)})}
         
         
         <div className="d-block">
@@ -29,4 +33,3 @@ const TodoList = (props) => {
     </>
 }
 
-export default TodoList;
